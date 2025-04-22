@@ -39,21 +39,22 @@ def main():
     # Input fields from the user
     no_of_adults = st.number_input("Number of Adults", min_value=0, value=2)
     no_of_children = st.number_input("Number of Children", min_value=0, value=0)
+    no_of_guests = st.number_input("Total Guests", min_value=1, value=2)
     no_of_weekend_nights = st.number_input("Weekend Nights", min_value=0, value=1)
     no_of_week_nights = st.number_input("Week Nights", min_value=0, value=2)
-    type_of_meal = st.selectbox("Meal Plan", [1,2,3,4,5])  # Replace with encoder values
-    required_car_parking_space = st.selectbox("Car Parking", [0, 1])
-    room_type = st.selectbox("Room Type", [1, 2, 3, 4, 5, 6, 7])
-    lead_time = st.number_input("Lead Time", min_value=0, value=10)
-    arrival_month = st.slider("Arrival Month", 1, 12, 6)
-    arrival_date = st.slider("Arrival Date", 1, 31, 15)
-    market_segment = st.selectbox("Market Segment", [1,2,3,4,5])
-    repeated_guest = st.selectbox("Is Repeated Guest", [0, 1])
+    type_of_meal = st.selectbox("Meal Plan", [1,2,3,4,5], value=1) 
+    required_car_parking_space = st.selectbox("Car Parking", [0, 1], value=0)
+    room_type = st.selectbox("Room Type", [1, 2, 3, 4, 5, 6, 7], value=1)
+    lead_time = st.number_input("Lead Time", min_value=0, value=224)
+    arrival_year = st.number_input("Arrival Year", min_value=0, value=2017)
+    arrival_month = st.number_input("Arrival Month", min_value=1, max_value=12, value=10)
+    arrival_date = st.number_input("Arrival Date", min_value=1, max_value=31, value=2)
+    market_segment = st.selectbox("Market Segment", [1,2,3,4,5], value=2)
+    repeated_guest = st.selectbox("Is Repeated Guest", [0, 1], value=0)
     no_of_previous_cancellations = st.number_input("Previous Cancellations", min_value=0, value=0)
     no_of_previous_bookings_not_canceled = st.number_input("Prev Bookings Not Canceled", min_value=0, value=0)
-    avg_price = st.number_input("Average Price", min_value=0.0, value=100.0)
+    avg_price = st.number_input("Average Price", min_value=0.0, value=65.00)
     no_of_special_requests = st.number_input("Special Requests", min_value=0, value=0)
-    no_of_guests = st.number_input("Total Guests", min_value=1, value=2)
 
     # Prediction button
     if st.button("Predict Cancellation"):
@@ -61,12 +62,14 @@ def main():
         features = {
             "no_of_adults": no_of_adults,
             "no_of_children": no_of_children,
+            "no_of_guests": no_of_guests,
             "no_of_weekend_nights": no_of_weekend_nights,
             "no_of_week_nights": no_of_week_nights,
             "type_of_meal": type_of_meal,
             "required_car_parking_space": required_car_parking_space,
             "room_type": room_type,
             "lead_time": lead_time,
+            "arrival_year": arrival_year,
             "arrival_month": arrival_month,
             "arrival_date": arrival_date,
             "market_segment": market_segment,
@@ -75,7 +78,6 @@ def main():
             "no_of_previous_bookings_not_canceled": no_of_previous_bookings_not_canceled,
             "avg_price": avg_price,
             "no_of_special_requests": no_of_special_requests,
-            "no_of_guests": no_of_guests
         }
 
         # Make prediction using the ModelInference class
