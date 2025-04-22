@@ -2,6 +2,7 @@ import streamlit as st
 import joblib
 import pandas as pd
 import numpy as np
+from sklearn.ensemble import RandomForestClassifier
 
 # Define the ModelInference class
 class ModelInference:
