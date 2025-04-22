@@ -3,6 +3,7 @@ import joblib
 import pandas as pd
 import numpy as np
 
+# Define the ModelInference class
 class ModelInference:
     def __init__(self, model_path):
         # Load the model
@@ -15,13 +16,19 @@ class ModelInference:
         if isinstance(input_data, dict):
             input_data = pd.DataFrame([input_data])  # Convert dict to DataFrame
         
-        if isinstance(input_data, pd.DataFrame):
-            # Ensure the DataFrame is passed to predict
-            prediction = self.model.predict(input_data)  # Make prediction with the model
-            return prediction
-        else:
-            raise ValueError("Input data must be a DataFrame or dict.")
-
+        # Handle missing values by filling them with zeros (or use mean/median)
+        if input_data.isnull().values.any():
+            st.warning("Input data contains missing values. Filling with zeros.")
+            input_data = input_data.fillna(0)  # Or use .fillna(input_data.mean()) if needed
+        
+        # Ensure correct data types (all features must be numeric)
+        for col in input_data.columns:
+            if not pd.api.types.is_numeric_dtype(input_data[col]):
+                raise ValueError(f"Feature {col} has invalid data type. Expected numeric data.")
+        
+        # Make prediction with the model
+        prediction = self.model.predict(input_data)
+        return prediction
 
 # Load the trained model with ModelInference
 model_inference = ModelInference("rf_model.pkl")
@@ -29,7 +36,7 @@ model_inference = ModelInference("rf_model.pkl")
 def main():
     st.title("Hotel Booking Cancellation Prediction")
 
-    # Inputs
+    # Input fields from the user
     no_of_adults = st.number_input("Number of Adults", min_value=0, value=2)
     no_of_children = st.number_input("Number of Children", min_value=0, value=0)
     no_of_weekend_nights = st.number_input("Weekend Nights", min_value=0, value=1)
@@ -48,8 +55,9 @@ def main():
     no_of_special_requests = st.number_input("Special Requests", min_value=0, value=0)
     no_of_guests = st.number_input("Total Guests", min_value=1, value=2)
 
-    # Prediction
+    # Prediction button
     if st.button("Predict Cancellation"):
+        # Prepare input data as a dictionary
         features = {
             "no_of_adults": no_of_adults,
             "no_of_children": no_of_children,
@@ -70,11 +78,13 @@ def main():
             "no_of_guests": no_of_guests
         }
 
-        # Make the prediction using the ModelInference class
-        prediction = model_inference.predict(features)
-
-        # Display the result
-        st.success(f"Prediction: {'Canceled' if prediction[0] == 1 else 'Not Canceled'}")
+        # Make prediction using the ModelInference class
+        try:
+            prediction = model_inference.predict(features)
+            # Display result
+            st.success(f"Prediction: {'Canceled' if prediction[0] == 1 else 'Not Canceled'}")
+        except ValueError as e:
+            st.error(f"Error: {e}")
 
 if __name__ == "__main__":
     main()
