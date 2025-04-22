@@ -41,13 +41,13 @@ def main():
     no_of_children = st.number_input("Number of Children", min_value=0, value=0)
     no_of_weekend_nights = st.number_input("Weekend Nights", min_value=0, value=1)
     no_of_week_nights = st.number_input("Week Nights", min_value=0, value=2)
-    type_of_meal = st.selectbox("Meal Plan", [0, 1, 2, 3])  # Replace with encoder values
+    type_of_meal = st.selectbox("Meal Plan", [1,2,3,4,5])  # Replace with encoder values
     required_car_parking_space = st.selectbox("Car Parking", [0, 1])
     room_type = st.selectbox("Room Type", [1, 2, 3, 4, 5, 6, 7])
     lead_time = st.number_input("Lead Time", min_value=0, value=10)
     arrival_month = st.slider("Arrival Month", 1, 12, 6)
     arrival_date = st.slider("Arrival Date", 1, 31, 15)
-    market_segment = st.selectbox("Market Segment", [0, 1, 2, 3, 4, 5, 6])
+    market_segment = st.selectbox("Market Segment", [1,2,3,4,5])
     repeated_guest = st.selectbox("Is Repeated Guest", [0, 1])
     no_of_previous_cancellations = st.number_input("Previous Cancellations", min_value=0, value=0)
     no_of_previous_bookings_not_canceled = st.number_input("Prev Bookings Not Canceled", min_value=0, value=0)
